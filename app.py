@@ -55,78 +55,64 @@ def handle_message(event):
     #line_bot_api.reply_message(event.reply_token,message)
     if event.message.text.startswith('開始使用'):
         btn = line_bot_api.push_message('Uaf6d62add8a5bce9a9a64d1d1d97abd2', TemplateSendMessage(
-    alt_text='ButtonsTemplate',
-    template=ButtonsTemplate(
-        colums=[
-            col1(
-                thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
-                title='記帳機器人',
-                text='這是按鈕樣板',
-                actions=[
-                    PostbackAction(
-                        label='User',
-                        display_text='新增',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='Start',
-                        display_text='記帳',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='End',
-                        display_text='結束',
-                        data='發送 postback'
-                    )
-                ]
-            ),
-            col1(
-                thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
-                title='記帳機器人',
-                text='這是按鈕樣板',
-                actions=[
-                    PostbackAction(
-                        label='User',
-                        display_text='新增',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='Start',
-                        display_text='記帳',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='End',
-                        display_text='結束',
-                        data='發送 postback'
-                    )
-                ]
-            ),
-            col1(
-                thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
-                title='記帳機器人',
-                text='這是按鈕樣板',
-                actions=[
-                    PostbackAction(
-                        label='User',
-                        display_text='新增',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='Start',
-                        display_text='記帳',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='End',
-                        display_text='結束',
-                        data='發送 postback'
-                    )
-                ]
-            )
-        ]
+        alt_text='ButtonsTemplate',
+        template=ButtonsTemplate(
+            colums=[
+                col1(
+                    thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
+                    title='記帳機器人',
+                    text='這是按鈕樣板',
+                    actions=[
+                        PostbackAction(
+                            label='User',
+                            display_text='新增',
+                            data='發送 postback'
+                        ),
+                        PostbackAction(
+                            label='Start',
+                            display_text='記帳',
+                            data='發送 postback'
+                        )
+                    ]
+                ),
+                col1(
+                    thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
+                    title='記帳機器人',
+                    text='這是按鈕樣板',
+                    actions=[
+                        PostbackAction(
+                            label='User',
+                            display_text='新增',
+                            data='發送 postback'
+                        ),
+                        PostbackAction(
+                            label='Start',
+                            display_text='記帳',
+                            data='發送 postback'
+                        )
+                    ]
+                ),
+                col1(
+                    thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
+                    title='記帳機器人',
+                    text='這是按鈕樣板',
+                    actions=[
+                        PostbackAction(
+                            label='User',
+                            display_text='新增',
+                            data='發送 postback'
+                        ),
+                        PostbackAction(
+                            label='Start',
+                            display_text='記帳',
+                            data='發送 postback'
+                        )
+                    ]
+                )
+            ]
+        )
     )
-))
+)
 """def handle_postback(event):
     # 取得 postback 的 data
     postback_data = event.postback.data
