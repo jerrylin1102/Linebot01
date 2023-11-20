@@ -52,30 +52,30 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
-    # line_bot_api.reply_message(event.reply_token, message)
+    #line_bot_api.reply_message(event.reply_token,message)
     if event.message.text.startswith('開始使用'):
-        btn = line_bot_api.reply_message(event.reply_token, TemplateSendMessage(
-            alt_text='ButtonsTemplate',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
-                title='記帳機器人',
-                text='這是按鈕樣板',
-                actions=[
-                    PostbackAction(
-                        label='User',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='Start',
-                        data='發送 postback'
-                    ),
-                    PostbackAction(
-                        label='End',
-                        data='發送 postback'
-                    )
-                ]
+        btn = line_bot_api.push_message('你的 user ID', TemplateSendMessage(
+    alt_text='ButtonsTemplate',
+    template=ButtonsTemplate(
+        thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
+        title='記帳機器人',
+        text='這是按鈕樣板',
+        actions=[
+            PostbackAction(
+                label='User',
+                data='發送 postback'
+            ),
+            PostbackAction(
+                label='Start',
+                data='發送 postback'
+            ),
+            PostbackAction(
+                label='End',
+                data='發送 postback'
             )
-        ))
+        ]
+    )
+))
 def handle_postback(event):
     # 取得 postback 的 data
     postback_data = event.postback.data
