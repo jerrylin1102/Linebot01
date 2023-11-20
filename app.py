@@ -54,28 +54,28 @@ def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     #line_bot_api.reply_message(event.reply_token,message)
     if re.match('開始使用',message):
-        buttons_template_message = TemplateSendMessage(
-        alt_text='這個看不到',
-        template=ButtonsTemplate(
-            thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
-            title='記帳機器人',
-            text='選單功能',
-            actions=[
-                PostbackAction(
-                    label='使用者',
-                    display_text='請輸入姓名:',
-                    data='action=檯面下'
-                    #line_bot_api.push_message('Uaf6d62add8a5bce9a9a64d1d1d97abd2', TextSendMessage(text='歡迎使用'))
-                ),
-                PostbackAction(
-                    label='記帳',
-                    text='我就是資料'
-                )
-            ]
-        )
+        btn = line_bot_api.push_message('你的 user ID', TemplateSendMessage(
+    alt_text='ButtonsTemplate',
+    template=ButtonsTemplate(
+        thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
+        title='記帳機器人',
+        text='這是按鈕樣板',
+        actions=[
+            PostbackAction(
+                label='User',
+                data='發送 postback'
+            ),
+            PostbackAction(
+                label='Start',
+                data='發送 postback'
+            ),
+            PostbackAction(
+                label='End',
+                data='發送 postback'
+            ),
+        ]
     )
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
-
+))
 #主程式
 import os
 if __name__ == "__main__":
