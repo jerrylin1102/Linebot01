@@ -54,7 +54,7 @@ def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     #line_bot_api.reply_message(event.reply_token,message)
     if event.message.text.startswith('開始使用'):
-        btn = line_bot_api.push_message('你的 user ID', TemplateSendMessage(
+        btn = line_bot_api.push_message('Uaf6d62add8a5bce9a9a64d1d1d97abd2', TemplateSendMessage(
     alt_text='ButtonsTemplate',
     template=ButtonsTemplate(
         thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
