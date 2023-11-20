@@ -53,7 +53,7 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     #line_bot_api.reply_message(event.reply_token,message)
-    if re.match('開始使用',message):
+    if event.message.text.startswith('開始使用'):
         btn = line_bot_api.push_message('你的 user ID', TemplateSendMessage(
     alt_text='ButtonsTemplate',
     template=ButtonsTemplate(
@@ -76,6 +76,14 @@ def handle_message(event):
         ]
     )
 ))
+def handle_postback(event):
+    # 取得 postback 的 data
+    postback_data = event.postback.data
+
+    # 根據 postback_data 做相應處理
+    if postback_data == '發送 postback':
+        reply_text = '您點擊了按鈕！'
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
 #主程式
 import os
 if __name__ == "__main__":
