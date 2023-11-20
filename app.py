@@ -52,13 +52,13 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
-    #line_bot_api.reply_message(event.reply_token,message)
+    
     if event.message.text.startswith('開始使用'):
         btn = line_bot_api.push_message('Uaf6d62add8a5bce9a9a64d1d1d97abd2', TemplateSendMessage(
             alt_text='ButtonsTemplate',
             template=ButtonsTemplate(
                 columns=[
-                    # Corrected usage of Column
+                    # 正確使用 Column
                     Column(
                         thumbnail_image_url='https://i.imgur.com/YSJayCb.jpeg',
                         title='記帳機器人',
