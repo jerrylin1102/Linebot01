@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jun  2 21:16:35 2021
 
-@author: Ivan
-版權屬於「行銷搬進大程式」所有，若有疑問，可聯絡ivanyang0606@gmail.com
-
-Line Bot聊天機器人
-第一章 Line Bot申請與串接
-Line Bot機器人串接與測試
-"""
 #載入LineBot所需要的套件
 from flask import Flask, request, abort
 
@@ -113,15 +104,6 @@ def handle_message(event):
                 ]
             )
         ))
-"""def handle_postback(event):
-    # 取得 postback 的 data
-    postback_data = event.postback.data
-
-    # 根據 postback_data 做相應處理
-    if postback_data == '發送 postback':
-        reply_text = '您點擊了按鈕！'
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-"""
 #主程式
 import os
 if __name__ == "__main__":
