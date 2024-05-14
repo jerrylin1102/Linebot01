@@ -3,7 +3,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import TextSendMessage, MessageEvent, TextMessage
-from openai import openai
+from openai import OpenAI
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ line_bot_api = LineBotApi(os.environ.get('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.environ.get('LINE_CHANNEL_SECRET'))
 
 # OpenAI API credentials
-openai_client = openai.OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+openai_client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
 # Main callback route
 @app.route("/callback", methods=['POST'])
@@ -33,12 +33,16 @@ def handle_message(event):
         reply = "歡迎使用！請問您需要什麼幫助？"
     else:
         # Send the user's message to ChatGPT using OpenAI's Python SDK
-        completion = openai.Completion.create(
-            engine="davinci",  # 更改為所需的模型
-            prompt=event.message.text,
-            max_tokens=50
+        completion = openai_client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": event.message.text,
+                }
+            ],
+            model="gpt-3.5-turbo"
         )
-        reply = completion.choices[0].text.strip()
+        reply = completion.choices[0].message.content
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
