@@ -1,9 +1,9 @@
 import os
-import requests
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import *
+from linebot.models import TextSendMessage, MessageEvent, TextMessage
+from openai import OpenAI
 
 app = Flask(__name__)
 
@@ -11,32 +11,8 @@ app = Flask(__name__)
 line_bot_api = LineBotApi('q8MasGUuwFhWx+O1opafyqY9vwRoy7RvYQTjgGcyjNFaI4x063mir+fnikvoyk2QqD+2uiEKJneCeNscwao694ZT82rH7mpHOMjtD5FC3XIdImkPAUKoVrbGRyWqehPSav3eYPBxxFea7K3EjELWOQdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('7a4ff39e79a9b8961c5ddf5f3b9a8bbf')
 
-# ChatGPT API credentials
-CHATGPT_API_KEY = 'sk-proj-kNysSwucjLn3bm8TssDAT3BlbkFJ6TWhLbgELrgaTcXC6UWY'
-CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions'
-
-# Function to send message to ChatGPT API
-def send_to_chatgpt(message):
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {CHATGPT_API_KEY}',
-    }
-    data = {
-        'model': 'text-davinci-002',  # You can choose a different model if needed
-        'messages': [
-            {
-                'role': 'system',
-                'content': message
-            }
-        ]
-    }
-    try:
-        response = requests.post(CHATGPT_API_URL, json=data, headers=headers)
-        response.raise_for_status()  # Raise an exception for any HTTP error
-        return response.json()['choices'][0]['message']['content']
-    except requests.exceptions.RequestException as e:
-        print(f"Error sending message to ChatGPT API: {e}")
-        return "Sorry, I couldn't process your request at the moment."
+# OpenAI API credentials
+openai_client = OpenAI(api_key='sk-proj-kNysSwucjLn3bm8TssDAT3BlbkFJ6TWhLbgELrgaTcXC6UWY')
 
 # Main callback route
 @app.route("/callback", methods=['POST'])
@@ -56,9 +32,16 @@ def handle_message(event):
     if event.message.text.startswith('開始使用'):
         reply = "歡迎使用！請問您需要什麼幫助？"
     else:
-        # Send the user's message to ChatGPT and get a response
-        user_message = event.message.text
-        reply = send_to_chatgpt(user_message)
+        # Send the user's message to ChatGPT using OpenAI's Python SDK
+        completion = openai_client.ChatCompletion.create(
+            model="text-davinci-003",  # 更改為所需的模型
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": event.message.text}
+            ]
+        )
+        reply = completion.choices[0].message
+
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
 if __name__ == "__main__":
