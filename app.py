@@ -3,16 +3,16 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import TextSendMessage, MessageEvent, TextMessage
-from openai import OpenAI
+from openai import openai
 
 app = Flask(__name__)
 
 # Line bot API credentials
-line_bot_api = LineBotApi('q8MasGUuwFhWx+O1opafyqY9vwRoy7RvYQTjgGcyjNFaI4x063mir+fnikvoyk2QqD+2uiEKJneCeNscwao694ZT82rH7mpHOMjtD5FC3XIdImkPAUKoVrbGRyWqehPSav3eYPBxxFea7K3EjELWOQdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('7a4ff39e79a9b8961c5ddf5f3b9a8bbf')
+line_bot_api = LineBotApi(os.environ.get('LINE_CHANNEL_ACCESS_TOKEN'))
+handler = WebhookHandler(os.environ.get('LINE_CHANNEL_SECRET'))
 
 # OpenAI API credentials
-openai_client = OpenAI(api_key='sk-proj-kNysSwucjLn3bm8TssDAT3BlbkFJ6TWhLbgELrgaTcXC6UWY')
+openai_client = openai.OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
 # Main callback route
 @app.route("/callback", methods=['POST'])
@@ -33,14 +33,12 @@ def handle_message(event):
         reply = "歡迎使用！請問您需要什麼幫助？"
     else:
         # Send the user's message to ChatGPT using OpenAI's Python SDK
-        completion = openai_client.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # 更改為所需的模型
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": event.message.text}
-            ]
+        completion = openai.Completion.create(
+            engine="davinci",  # 更改為所需的模型
+            prompt=event.message.text,
+            max_tokens=50
         )
-        reply = completion.choices[0].message
+        reply = completion.choices[0].text.strip()
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
