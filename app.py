@@ -4,7 +4,6 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
-import re
 
 app = Flask(__name__)
 
@@ -31,8 +30,13 @@ def send_to_chatgpt(message):
             }
         ]
     }
-    response = requests.post(CHATGPT_API_URL, json=data, headers=headers)
-    return response.json()['choices'][0]['message']['content']
+    try:
+        response = requests.post(CHATGPT_API_URL, json=data, headers=headers)
+        response.raise_for_status()  # Raise an exception for any HTTP error
+        return response.json()['choices'][0]['message']['content']
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending message to ChatGPT API: {e}")
+        return "Sorry, I couldn't process your request at the moment."
 
 # Main callback route
 @app.route("/callback", methods=['POST'])
