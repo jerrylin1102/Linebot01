@@ -34,7 +34,7 @@ def handle_message(event):
     else:
         # Send the user's message to ChatGPT using OpenAI's Python SDK
         completion = openai_client.ChatCompletion.create(
-            model="text-davinci-003",  # 更改為所需的模型
+            model="gpt-3.5-turbo",  # 更改為所需的模型
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": event.message.text}
